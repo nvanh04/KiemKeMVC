@@ -1,0 +1,150 @@
+-- 1. Kiểm tra và tạo Database nếu chưa tồn tại
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'KiemKeDb')
+BEGIN
+    CREATE DATABASE KiemKeDb;
+END
+GO
+
+USE KiemKeDb;
+GO
+
+-- 2. Bảng Phân Xưởng
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Workshops')
+BEGIN
+    CREATE TABLE Workshops (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        Name NVARCHAR(100) NOT NULL UNIQUE,
+        Password NVARCHAR(50) NOT NULL
+    );
+END
+GO
+
+-- 3. Bảng Danh Mục Vật Tư (Độc lập theo Phân xưởng)
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Categories')
+BEGIN
+    CREATE TABLE Categories (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        Name NVARCHAR(100) NOT NULL,
+        Workshop NVARCHAR(100) NOT NULL
+    );
+END
+GO
+
+-- 4. Bảng Máy / Vị Trí (Độc lập theo Phân xưởng)
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Machines')
+BEGIN
+    CREATE TABLE Machines (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        Name NVARCHAR(100) NOT NULL,
+        Workshop NVARCHAR(100) NOT NULL
+    );
+END
+GO
+
+-- 5. Bảng Master Data Mã SAP (Hỗ trợ Aliases và phân tách riêng cho từng Phân xưởng)
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Materials')
+BEGIN
+    CREATE TABLE Materials (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        SapCode NVARCHAR(50) NOT NULL,
+        Name NVARCHAR(250) NOT NULL,
+        Description NVARCHAR(250),
+        Category NVARCHAR(100) NOT NULL,
+        Workshop NVARCHAR(100) NOT NULL,
+        Aliases NVARCHAR(500)
+    );
+END
+GO
+
+-- Đảm bảo cột Aliases luôn tồn tại nếu database đã có sẵn bảng này từ trước
+IF NOT EXISTS (
+    SELECT 1 FROM sys.columns 
+    WHERE object_id = OBJECT_ID(N'[dbo].[Materials]') AND name = 'Aliases'
+)
+BEGIN
+    ALTER TABLE [dbo].[Materials] ADD [Aliases] NVARCHAR(500) NULL;
+END
+GO
+
+-- 6. Bảng Phiếu Kiểm Kê
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'InventorySheets')
+BEGIN
+    CREATE TABLE InventorySheets (
+        Id NVARCHAR(50) PRIMARY KEY,
+        Workshop NVARCHAR(100) NOT NULL,
+        DeviceId NVARCHAR(100),
+        Date NVARCHAR(20) NOT NULL,
+        Machine NVARCHAR(100),
+        CreatedBy NVARCHAR(100) NOT NULL,
+        CreatedAt DATETIME DEFAULT GETDATE()
+    );
+END
+GO
+
+-- 7. Bảng Chi Tiết Vật Tư Trong Phiếu Kiểm Kê
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'InventorySheetItems')
+BEGIN
+    CREATE TABLE InventorySheetItems (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        SheetId NVARCHAR(50) NOT NULL FOREIGN KEY REFERENCES InventorySheets(Id) ON DELETE CASCADE,
+        SapCode NVARCHAR(50) NOT NULL,
+        Name NVARCHAR(250) NOT NULL,
+        Category NVARCHAR(100),
+        Workshop NVARCHAR(100),
+        Machine NVARCHAR(100),
+        Quantity DECIMAL(18,2) DEFAULT 0,
+        Tubes INT DEFAULT 0,
+        Note NVARCHAR(250)
+    );
+END
+GO
+
+-- ==========================================================
+-- NẠP DỮ LIỆU MẪU BAN ĐẦU (NẾU HỆ THỐNG TRỐNG)
+-- ==========================================================
+
+IF NOT EXISTS (SELECT 1 FROM Workshops)
+BEGIN
+    INSERT INTO Workshops (Name, Password) VALUES 
+    (N'Phân Xưởng Cắt', 'Cat2026'),
+    (N'Phân Xưởng May', 'May2026'),
+    (N'Phân Xưởng In', 'In2026'),
+    (N'Phân Xưởng Dệt', 'Det2026'),
+    (N'Phân Xưởng Hoàn Thiện', 'Hoanthien2026');
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM Categories)
+BEGIN
+    INSERT INTO Categories (Name, Workshop) VALUES 
+    (N'NẸP NHỎ', N'Phân Xưởng Cắt'),
+    (N'NẸP LỚN', N'Phân Xưởng Cắt'),
+    (N'CHỈ MAY', N'Phân Xưởng Cắt'),
+    (N'DÂY ĐAI', N'Phân Xưởng Cắt'),
+    (N'KEO DÁN LƯNG', N'Phân Xưởng Cắt'),
+    (N'VẢI CHÍNH', N'Phân Xưởng May'),
+    (N'VẢI LÓT', N'Phân Xưởng May');
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM Machines)
+BEGIN
+    INSERT INTO Machines (Name, Workshop) VALUES 
+    (N'Máy Cắt 1', N'Phân Xưởng Cắt'),
+    (N'Máy Cắt 2', N'Phân Xưởng Cắt'),
+    (N'Máy Cắt 3', N'Phân Xưởng Cắt'),
+    (N'Máy May 1', N'Phân Xưởng May'),
+    (N'Máy May 2', N'Phân Xưởng May');
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM Materials)
+BEGIN
+    INSERT INTO Materials (SapCode, Workshop, Name, Category, Description, Aliases) VALUES
+    ('400009293', N'Phân Xưởng Cắt', N'Nẹp lớn ghép màng mờ', N'NẸP LỚN', 'TR-NL-50-GMM-TRA-0-XK', N'NL GHÉP MÀNG MỜ, NL GMM TRA, NL MỜ'),
+    ('400009299', N'Phân Xưởng Cắt', N'Nẹp cam lớn 1585', N'NẸP LỚN', 'TR-NL-50-GMB-CAM-1858C-XK', N'NL CAM 1585, NL CAM 1858C'),
+    ('400009033', N'Phân Xưởng Cắt', N'Nẹp nhỏ xanh lá 357C', N'NẸP NHỎ', 'N12-6800-GMB-XLA-357C', N'NN XANH LÁ 357, NN XLA 357, NN XANH LA'),
+    ('200000023', N'Phân Xưởng Cắt', N'Dây đai', N'DÂY ĐAI', N'Dây đai đóng kiện Nhiệt', N'DÂY ĐAI, DAY DAI'),
+    ('110000009', N'Phân Xưởng Cắt', N'Chỉ coton 7 trắng 1 xanh', N'CHỈ MAY', 'Chỉ may-cotton-8 sợi', N'CHỈ COTON 7 TRẮNG 1 XANH');
+END
+GO

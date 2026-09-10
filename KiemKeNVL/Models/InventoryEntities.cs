@@ -118,22 +118,87 @@ namespace KiemKeNVL.Models
 
     public class SheetItemDto
     {
-        public string sapCode { get; set; }
-        public string name { get; set; }
-        public string category { get; set; }
-        public string workshop { get; set; }
-        public string machine { get; set; }
-        public decimal quantity { get; set; }
-        public int tubes { get; set; }
-        public string note { get; set; }
+        public string SapCode { get; set; }
+        public string Name { get; set; }
+        public string Category { get; set; }
+        public string Workshop { get; set; }
+        public string Machine { get; set; }
+        public decimal Quantity { get; set; }
+        public int Tubes { get; set; }
+        public string Note { get; set; }
     }
 
     public class SaveSheetRequest
     {
-        public string workshop { get; set; }
-        public string deviceId { get; set; }
-        public string date { get; set; }
-        public string createdBy { get; set; }
-        public List<SheetItemDto> items { get; set; }
+        public string Workshop { get; set; }
+        public string DeviceId { get; set; }
+        public string Date { get; set; }
+        public string CreatedBy { get; set; }
+        public List<SheetItemDto> Items { get; set; }
+    }
+
+    public class EditSheetRequest
+    {
+        public string SheetId { get; set; }
+        public string Workshop { get; set; }
+        public string Date { get; set; }
+        public string CreatedBy { get; set; }
+        public List<SheetItemDto> Items { get; set; }
+    }
+
+    public class MaterialDto
+    {
+        public string OriginalSapCode { get; set; }
+        public string SapCode { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Category { get; set; }
+        public string Workshop { get; set; }
+        public string Aliases { get; set; }
+    }
+
+    public class BatchExcelCategoryDto
+    {
+        public string Workshop { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class BatchExcelMachineDto
+    {
+        public string Workshop { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class ImportExcelCategoriesRequest
+    {
+        public List<BatchExcelCategoryDto> Categories { get; set; }
+    }
+
+    public class ImportExcelMachinesRequest
+    {
+        public List<BatchExcelMachineDto> Machines { get; set; }
+    }
+
+    public class BatchMaterialRequest
+    {
+        public List<MaterialDto> Materials { get; set; }
+    }
+
+    public class DeleteBatchSheetsRequest
+    {
+        public List<string> SheetIds { get; set; }
+    }
+
+    // Bổ sung 2 lớp này để giải quyết lỗi CS0246
+    public class BatchCategoryDto
+    {
+        public string Workshop { get; set; }
+        public string Names { get; set; }
+    }
+
+    public class BatchMachineDto
+    {
+        public string Workshop { get; set; }
+        public string Names { get; set; }
     }
 }
