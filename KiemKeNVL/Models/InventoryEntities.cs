@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -189,7 +189,6 @@ namespace KiemKeNVL.Models
         public List<string> SheetIds { get; set; }
     }
 
-    // Bổ sung 2 lớp này để giải quyết lỗi CS0246
     public class BatchCategoryDto
     {
         public string Workshop { get; set; }
