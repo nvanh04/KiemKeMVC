@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -189,7 +189,11 @@ namespace KiemKeNVL.Models
         public List<string> SheetIds { get; set; }
     }
 
+<<<<<<< HEAD
     public class AdminLoginRequest
+=======
+    public class BatchCategoryDto
+>>>>>>> 62f4d376f59fadd609f2c697b4b813fdfc4b58a6
     {
         public string Password { get; set; }
     }
