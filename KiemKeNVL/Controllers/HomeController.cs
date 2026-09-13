@@ -40,44 +40,6 @@ namespace KiemKeNVL.Controllers
             return Json(new { success = true, workshops, categories, machines, materials }, JsonRequestBehavior.AllowGet);
         }
 
-        // XÁC THỰC ADMIN TRÊN DATABASE (BẢO MẬT TUYỆT ĐỐI, KHÔNG LỘ MẬT KHẨU TRÊN CODE)
-        [HttpPost]
-        public JsonResult VerifyAdminLogin(string password)
-        {
-            if (string.IsNullOrWhiteSpace(password))
-                return Json(new { success = false, message = "Vui lòng nhập mật khẩu quản trị!" });
-
-            string passTrim = password.Trim();
-
-            // Tìm kiếm trong bảng Workshops xem có khớp mật khẩu không
-            var matchedUser = _db.Workshops.FirstOrDefault(w => w.Password != null && w.Password.ToLower() == passTrim.ToLower());
-            if (matchedUser != null)
-            {
-                if (matchedUser.Name.Contains("Admin") || matchedUser.Name.Contains("Tổng"))
-                {
-                    Session["AdminRole"] = "SUPER_ADMIN";
-                    Session["AdminWorkshop"] = null;
-                    return Json(new { success = true, role = "SUPER_ADMIN", workshop = (string)null, message = "Đăng nhập Admin Tổng thành công!" });
-                }
-                else
-                {
-                    Session["AdminRole"] = "WORKSHOP_ADMIN";
-                    Session["AdminWorkshop"] = matchedUser.Name;
-                    return Json(new { success = true, role = "WORKSHOP_ADMIN", workshop = matchedUser.Name, message = $"Đăng nhập Admin {matchedUser.Name} thành công!" });
-                }
-            }
-
-            return Json(new { success = false, message = "Mật khẩu quản trị không chính xác!" });
-        }
-
-        [HttpPost]
-        public JsonResult LogoutAdmin()
-        {
-            Session["AdminRole"] = null;
-            Session["AdminWorkshop"] = null;
-            return Json(new { success = true, message = "Đã đăng xuất tài khoản quản trị!" });
-        }
-
         [HttpPost]
         public JsonResult VerifyAdminLogin(AdminLoginRequest req)
         {
