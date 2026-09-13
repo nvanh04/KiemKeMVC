@@ -81,15 +81,15 @@
             </div>
 
             <nav class="flex items-center space-x-1 sm:space-x-1.5 shrink-0">
-                <button onclick="switchTab('user-tab')" id="btn-user-tab" class="px-2 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition bg-blue-600 text-white shadow flex items-center space-x-1">
+                <button type="button" onclick="switchTab('user-tab')" id="btn-user-tab" class="px-2 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition bg-blue-600 text-white shadow flex items-center space-x-1">
                     <i data-lucide="clipboard-edit" class="w-3.5 h-3.5"></i>
                     <span>Nhập Phiếu</span>
                 </button>
-                <button onclick="switchTab('history-tab')" id="btn-history-tab" class="px-2 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-300 hover:text-white flex items-center space-x-1">
+                <button type="button" onclick="switchTab('history-tab')" id="btn-history-tab" class="px-2 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-300 hover:text-white flex items-center space-x-1">
                     <i data-lucide="history" class="w-3.5 h-3.5"></i>
                     <span>Nhật Ký</span>
                 </button>
-                <button onclick="openAdminAuthModal()" id="btn-admin-tab" class="px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 hover:bg-amber-600 text-slate-950 flex items-center space-x-1 shadow-sm">
+                <button type="button" onclick="openAdminAuthModal()" id="btn-admin-tab" class="px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 hover:bg-amber-600 text-slate-950 flex items-center space-x-1 shadow-sm">
                     <i data-lucide="shield-check" class="w-3.5 h-3.5 text-slate-950"></i>
                     <span id="btn-admin-text">Admin</span>
                 </button>
@@ -125,7 +125,7 @@
             <div class="bg-white rounded-xl p-3.5 sm:p-5 shadow-sm border border-slate-200 text-center space-y-2.5">
                 <h3 class="font-bold text-slate-800 text-sm sm:text-base">2. Quét Mã QR Tem Vật Tư</h3>
                 <p class="text-xs text-slate-500">Đang chọn: <b id="lbl-active-workshop" class="text-blue-600">Phân Xưởng Cắt</b></p>
-                <button onclick="startQRScanner()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 text-white font-bold py-3 px-4 rounded-xl shadow flex items-center justify-center space-x-2">
+                <button type="button" onclick="startQRScanner()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 text-white font-bold py-3 px-4 rounded-xl shadow flex items-center justify-center space-x-2">
                     <i data-lucide="camera" class="w-5 h-5"></i>
                     <span class="text-xs sm:text-sm uppercase tracking-wide">BẬT CAMERA QUÉT QR</span>
                 </button>
@@ -170,8 +170,8 @@
                         <input type="text" id="input-note" placeholder="Nhập ghi chú..." class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs outline-none">
                     </div>
                     <div class="flex space-x-2 pt-1">
-                        <button onclick="cancelScanItem()" class="w-1/3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 rounded-lg text-xs">Hủy</button>
-                        <button onclick="addScannedItemToList()" class="w-2/3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-lg text-xs shadow flex items-center justify-center space-x-1">
+                        <button type="button" onclick="cancelScanItem()" class="w-1/3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 rounded-lg text-xs">Hủy</button>
+                        <button type="button" onclick="addScannedItemToList()" class="w-2/3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-lg text-xs shadow flex items-center justify-center space-x-1">
                             <i data-lucide="plus-circle" class="w-4 h-4"></i>
                             <span>THÊM VÀO PHIẾU</span>
                         </button>
@@ -205,7 +205,7 @@
                     </table>
                 </div>
                 <div class="p-2.5 sm:p-3 bg-slate-50 border-t border-slate-200 flex justify-end">
-                    <button onclick="saveFullInventorySheet()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs sm:text-sm shadow flex items-center justify-center space-x-2">
+                    <button type="button" onclick="saveFullInventorySheet()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs sm:text-sm shadow flex items-center justify-center space-x-2">
                         <i data-lucide="save" class="w-4 h-4"></i>
                         <span>HOÀN TẤT & LƯU PHIẾU KIỂM KÊ</span>
                     </button>
@@ -221,7 +221,7 @@
                         <i data-lucide="lock" class="w-4 h-4 text-amber-400 shrink-0"></i>
                         <span id="history-permission-text" class="font-semibold">Chế độ Thiết Bị: Hiển thị các phiếu máy này vừa nhập.</span>
                     </div>
-                    <button id="btn-history-login-trigger" onclick="openAdminAuthModal()" class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded text-[11px] shrink-0">Đăng Nhập Admin</button>
+                    <button type="button" id="btn-history-login-trigger" onclick="openAdminAuthModal()" class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded text-[11px] shrink-0">Đăng Nhập Admin</button>
                 </div>
 
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b pb-2">
@@ -232,8 +232,8 @@
                         <p class="text-xs text-slate-500">Hiển thị: <b id="displayed-sheets-count" class="text-blue-600">0</b> phiếu</p>
                     </div>
                     <div class="flex space-x-2 w-full sm:w-auto">
-                        <button onclick="setTodayFilter()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-2.5 py-1.5 rounded-lg border">Hôm Nay</button>
-                        <button onclick="clearDateFilter()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-2.5 py-1.5 rounded-lg border">Tất Cả</button>
+                        <button type="button" onclick="setTodayFilter()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-2.5 py-1.5 rounded-lg border">Hôm Nay</button>
+                        <button type="button" onclick="clearDateFilter()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-2.5 py-1.5 rounded-lg border">Tất Cả</button>
                     </div>
                 </div>
 
@@ -253,11 +253,11 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
-                    <button onclick="exportToExcelByDateRange()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-3 rounded-lg flex items-center justify-center space-x-1.5 shadow transition">
+                    <button type="button" onclick="exportToExcelByDateRange()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-3 rounded-lg flex items-center justify-center space-x-1.5 shadow transition">
                         <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
                         <span>XUẤT EXCEL CÁC PHIẾU ĐANG XEM</span>
                     </button>
-                    <button id="btn-delete-filtered-sheets" onclick="deleteSheetsByDateRange()" class="hidden w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 px-3 rounded-lg flex items-center justify-center space-x-1.5 shadow transition">
+                    <button type="button" id="btn-delete-filtered-sheets" onclick="deleteSheetsByDateRange()" class="hidden w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 px-3 rounded-lg flex items-center justify-center space-x-1.5 shadow transition">
                         <i data-lucide="trash-2" class="w-4 h-4"></i>
                         <span>XÓA CÁC PHIẾU ĐANG LỌC</span>
                     </button>
@@ -294,7 +294,7 @@
                         <p id="admin-role-badge" class="font-bold text-xs sm:text-sm text-amber-300">Admin Tổng Toàn Nhà Máy</p>
                     </div>
                 </div>
-                <button onclick="logoutAdmin()" class="px-2.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-bold flex items-center space-x-1 shadow">
+                <button type="button" onclick="logoutAdmin()" class="px-2.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-bold flex items-center space-x-1 shadow">
                     <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
                     <span>Đăng Xuất</span>
                 </button>
@@ -306,14 +306,14 @@
                     <h2 class="font-bold text-slate-800 text-sm flex items-center">
                         <i data-lucide="factory" class="w-4 h-4 mr-1.5 text-blue-600"></i>1. Quản Lý Phân Xưởng (Admin Tổng)
                     </h2>
-                    <button onclick="openAddWorkshopModal()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1">
+                    <button type="button" onclick="openAddWorkshopModal()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1">
                         <i data-lucide="plus" class="w-3.5 h-3.5"></i><span>Thêm Phân Xưởng</span>
                     </button>
                 </div>
                 <div id="admin-workshops-chips" class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1"></div>
             </div>
 
-            <!-- Mục 2: Danh mục -->
+            <!-- Mục 2: Danh mục (CHỈ THÊM THỦ CÔNG & EXCEL) -->
             <div class="bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-slate-200 space-y-2.5">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <h2 class="font-bold text-slate-800 text-sm flex items-center">
@@ -323,7 +323,7 @@
                     <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto">
                         <select id="admin-cat-workshop-filter" onchange="renderAdminCategoriesChips()" class="bg-slate-50 border border-slate-300 rounded-lg px-2 py-1 text-xs font-semibold"></select>
 
-                        <button onclick="downloadCategoryExcelTemplate()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1" title="Tải mẫu Excel danh mục">
+                        <button type="button" onclick="downloadCategoryExcelTemplate()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1" title="Tải mẫu Excel danh mục">
                             <i data-lucide="download" class="w-3.5 h-3.5 text-emerald-600"></i><span>Tải Mẫu</span>
                         </button>
                         <label for="excel-cat-file-input" class="cursor-pointer bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shadow">
@@ -331,13 +331,10 @@
                         </label>
                         <input type="file" id="excel-cat-file-input" accept=".xlsx, .xls, .csv" class="hidden" onchange="handleCategoryExcelImport(event)">
 
-                        <button onclick="openBatchCategoryModal()" class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shrink-0 shadow">
-                            <i data-lucide="layers" class="w-3.5 h-3.5"></i><span>Thêm Hàng Loạt</span>
-                        </button>
-                        <button onclick="deleteAllCategoriesAdmin()" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shrink-0">
+                        <button type="button" onclick="deleteAllCategoriesAdmin()" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shrink-0">
                             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i><span>Xóa Tất Cả</span>
                         </button>
-                        <button onclick="openAddCategoryModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shrink-0">
+                        <button type="button" onclick="openAddCategoryModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shrink-0">
                             <i data-lucide="plus" class="w-3.5 h-3.5"></i><span>Thêm</span>
                         </button>
                     </div>
@@ -345,7 +342,7 @@
                 <div id="admin-categories-chips" class="flex flex-wrap gap-1.5 pt-1"></div>
             </div>
 
-            <!-- Mục 3: Máy/Vị trí -->
+            <!-- Mục 3: Máy/Vị trí (CHỈ THÊM THỦ CÔNG & EXCEL) -->
             <div class="bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-slate-200 space-y-2.5">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <h2 class="font-bold text-slate-800 text-sm flex items-center">
@@ -355,7 +352,7 @@
                     <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto">
                         <select id="admin-mach-workshop-filter" onchange="renderAdminMachinesChips()" class="bg-slate-50 border border-slate-300 rounded-lg px-2 py-1 text-xs font-semibold"></select>
 
-                        <button onclick="downloadMachineExcelTemplate()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1" title="Tải mẫu Excel máy">
+                        <button type="button" onclick="downloadMachineExcelTemplate()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1" title="Tải mẫu Excel máy">
                             <i data-lucide="download" class="w-3.5 h-3.5 text-indigo-600"></i><span>Tải Mẫu</span>
                         </button>
                         <label for="excel-mach-file-input" class="cursor-pointer bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shadow">
@@ -363,13 +360,10 @@
                         </label>
                         <input type="file" id="excel-mach-file-input" accept=".xlsx, .xls, .csv" class="hidden" onchange="handleMachineExcelImport(event)">
 
-                        <button onclick="openBatchMachineModal()" class="bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shrink-0 shadow">
-                            <i data-lucide="layers" class="w-3.5 h-3.5"></i><span>Thêm Hàng Loạt</span>
-                        </button>
-                        <button onclick="deleteAllMachinesAdmin()" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shrink-0">
+                        <button type="button" onclick="deleteAllMachinesAdmin()" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shrink-0">
                             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i><span>Xóa Tất Cả</span>
                         </button>
-                        <button onclick="openAddMachineModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shrink-0">
+                        <button type="button" onclick="openAddMachineModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shrink-0">
                             <i data-lucide="plus" class="w-3.5 h-3.5"></i><span>Thêm</span>
                         </button>
                     </div>
@@ -385,7 +379,7 @@
                         <span id="mat-section-title">4. Danh Mục Mã SAP</span> (<span id="admin-materials-count">0</span> mã)
                     </h2>
                     <div class="flex flex-wrap gap-1.5 w-full md:w-auto">
-                        <button onclick="downloadSampleExcelTemplate()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1">
+                        <button type="button" onclick="downloadSampleExcelTemplate()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1">
                             <i data-lucide="download" class="w-3.5 h-3.5 text-blue-600"></i>
                             <span>Tải Mẫu Excel</span>
                         </button>
@@ -396,11 +390,11 @@
                         </label>
                         <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" class="hidden" onchange="handleExcelImport(event)">
 
-                        <button onclick="deleteAllMaterialsAdmin()" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shadow">
+                        <button type="button" onclick="deleteAllMaterialsAdmin()" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shadow">
                             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i><span>Xóa Tất Cả Mã SAP</span>
                         </button>
 
-                        <button onclick="openAddMaterialModal()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shadow">
+                        <button type="button" onclick="openAddMaterialModal()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center space-x-1 shadow">
                             <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i><span>Thêm Thủ Công</span>
                         </button>
                     </div>
@@ -440,7 +434,7 @@
                     <i data-lucide="scan" class="w-4 h-4 mr-1.5 text-blue-400"></i>
                     Đưa Mã QR Vào Khung
                 </h3>
-                <button onclick="stopQRScanner()" class="text-slate-400 hover:text-white p-1">
+                <button type="button" onclick="stopQRScanner()" class="text-slate-400 hover:text-white p-1">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -448,7 +442,7 @@
                 <div id="qr-reader" class="w-full rounded-lg overflow-hidden min-h-[240px]"></div>
             </div>
             <div class="p-2.5 bg-slate-900 border-t border-slate-800 flex justify-end">
-                <button onclick="stopQRScanner()" class="px-4 py-1.5 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold rounded-lg shadow transition">Đóng</button>
+                <button type="button" onclick="stopQRScanner()" class="px-4 py-1.5 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold rounded-lg shadow transition">Đóng</button>
             </div>
         </div>
     </div>
@@ -461,7 +455,7 @@
                     <i data-lucide="alert-triangle" class="w-4 h-4 mr-1.5"></i>
                     Phát Hiện Mã QR Chưa Có Trong Hệ Thống
                 </h3>
-                <button onclick="closeUnmappedModal()" class="text-white hover:opacity-80"><i data-lucide="x" class="w-4 h-4"></i></button>
+                <button type="button" onclick="closeUnmappedModal()" class="text-white hover:opacity-80"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
             <form onsubmit="saveNewMaterialFromQR(event)" class="p-4 space-y-2.5 text-xs">
                 <p class="text-slate-600">Dữ liệu quét từ tem: <br><b id="unmapped-raw-text" class="text-amber-800 font-mono text-xs bg-amber-50 p-1.5 rounded block mt-1 truncate border border-amber-200"></b></p>
@@ -502,60 +496,12 @@
         </div>
     </div>
 
-    <!-- Modal Thêm Hàng Loạt Danh Mục -->
-    <div id="batch-category-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-3">
-        <div class="bg-white rounded-xl shadow-xl w-full max-w-sm overflow-hidden">
-            <div class="bg-emerald-900 px-3.5 py-2.5 text-white flex justify-between items-center">
-                <h3 class="font-bold text-xs">Thêm Hàng Loạt Danh Mục</h3>
-                <button onclick="closeBatchCategoryModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
-            </div>
-            <form onsubmit="saveBatchCategoryForm(event)" class="p-3.5 space-y-3 text-xs">
-                <div>
-                    <label class="block font-bold text-slate-600 mb-1">Phân Xưởng <span class="text-red-500">*</span></label>
-                    <select id="batch-cat-workshop" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 font-bold outline-none"></select>
-                </div>
-                <div>
-                    <label class="block font-bold text-slate-600 mb-1">Danh Sách Danh Mục (ngăn cách bằng dấu phẩy hoặc xuống dòng) <span class="text-red-500">*</span></label>
-                    <textarea id="batch-cat-names" rows="4" required placeholder="NẸP NHỎ, NẸP LỚN, DÂY ĐAI..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 outline-none font-semibold"></textarea>
-                </div>
-                <div class="pt-1 flex justify-end space-x-2">
-                    <button type="button" onclick="closeBatchCategoryModal()" class="px-3 py-1.5 border rounded-lg font-bold">Hủy</button>
-                    <button type="submit" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg font-bold shadow">Lưu Hàng Loạt</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Thêm Hàng Loạt Máy / Vị Trí -->
-    <div id="batch-machine-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-3">
-        <div class="bg-white rounded-xl shadow-xl w-full max-w-sm overflow-hidden">
-            <div class="bg-indigo-900 px-3.5 py-2.5 text-white flex justify-between items-center">
-                <h3 class="font-bold text-xs">Thêm Hàng Loạt Máy / Vị Trí</h3>
-                <button onclick="closeBatchMachineModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
-            </div>
-            <form onsubmit="saveBatchMachineForm(event)" class="p-3.5 space-y-3 text-xs">
-                <div>
-                    <label class="block font-bold text-slate-600 mb-1">Phân Xưởng <span class="text-red-500">*</span></label>
-                    <select id="batch-mach-workshop" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 font-bold outline-none"></select>
-                </div>
-                <div>
-                    <label class="block font-bold text-slate-600 mb-1">Danh Sách Máy (ngăn cách bằng dấu phẩy hoặc xuống dòng) <span class="text-red-500">*</span></label>
-                    <textarea id="batch-mach-names" rows="4" required placeholder="Máy Cắt 1, Máy Cắt 2, Máy Cắt 3..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 outline-none font-semibold"></textarea>
-                </div>
-                <div class="pt-1 flex justify-end space-x-2">
-                    <button type="button" onclick="closeBatchMachineModal()" class="px-3 py-1.5 border rounded-lg font-bold">Hủy</button>
-                    <button type="submit" class="px-3 py-1.5 bg-indigo-600 text-white rounded-lg font-bold shadow">Lưu Hàng Loạt</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Xem Chi Tiết Phiếu (Đủ 6 Cột) -->
+    <!-- Modal Xem Chi Tiết Phiếu -->
     <div id="detail-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-3">
         <div class="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden">
             <div class="bg-slate-900 px-3.5 py-2.5 text-white flex justify-between items-center">
                 <h3 id="detail-modal-title" class="font-bold text-xs">Chi Tiết Phiếu Kiểm Kê</h3>
-                <button onclick="closeDetailModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+                <button type="button" onclick="closeDetailModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
             <div class="p-3.5 space-y-3">
                 <div id="detail-modal-info" class="grid grid-cols-2 gap-1 text-[11px] font-semibold bg-blue-50 p-2.5 rounded-lg text-blue-900"></div>
@@ -583,7 +529,7 @@
         <div class="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
             <div class="bg-slate-900 px-3.5 py-2.5 text-white flex justify-between items-center shrink-0">
                 <h3 id="edit-modal-title" class="font-bold text-xs">Sửa Phiếu Kiểm Kê</h3>
-                <button onclick="closeEditSheetModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+                <button type="button" onclick="closeEditSheetModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
             <div class="p-3.5 space-y-3 overflow-y-auto flex-grow text-xs">
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -604,7 +550,7 @@
                 <div class="border-t border-slate-200 pt-2">
                     <div class="flex justify-between items-center mb-2">
                         <span class="font-bold text-slate-700">Danh Sách Vật Tư Trong Phiếu</span>
-                        <button onclick="addMaterialToEditingSheet()" class="text-blue-600 hover:text-blue-800 font-bold flex items-center space-x-1">
+                        <button type="button" onclick="addMaterialToEditingSheet()" class="text-blue-600 hover:text-blue-800 font-bold flex items-center space-x-1">
                             <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
                             <span>Thêm Vật Tư</span>
                         </button>
@@ -613,8 +559,8 @@
                 </div>
             </div>
             <div class="p-3 bg-slate-100 border-t border-slate-200 flex justify-end space-x-2 shrink-0">
-                <button onclick="closeEditSheetModal()" class="px-3 py-1.5 border rounded-lg font-bold">Hủy</button>
-                <button onclick="saveEditedSheetAdmin()" class="px-4 py-1.5 bg-blue-600 text-white rounded-lg font-bold shadow">Lưu Thay Đổi</button>
+                <button type="button" onclick="closeEditSheetModal()" class="px-3 py-1.5 border rounded-lg font-bold">Hủy</button>
+                <button type="button" onclick="saveEditedSheetAdmin()" class="px-4 py-1.5 bg-blue-600 text-white rounded-lg font-bold shadow">Lưu Thay Đổi</button>
             </div>
         </div>
     </div>
@@ -624,11 +570,11 @@
         <div class="bg-white rounded-xl shadow-xl w-full max-w-xs overflow-hidden">
             <div class="bg-slate-900 px-3.5 py-2.5 text-white flex justify-between items-center">
                 <h3 class="font-bold text-xs">Xác Thực Quản Trị Viên</h3>
-                <button onclick="closeAdminAuthModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+                <button type="button" onclick="closeAdminAuthModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
             <form onsubmit="verifyAdminPass(event)" class="p-3.5 space-y-3">
                 <p class="text-xs text-slate-500">Nhập mật khẩu Admin Tổng hoặc Admin Phân Xưởng:</p>
-                <input type="password" id="admin-pass-input" placeholder="Nhập mật khẩu..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-bold outline-none">
+                <input type="password" id="admin-pass-input" placeholder="Nhập mật khẩu..." required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-bold outline-none">
                 <div class="flex justify-end space-x-2 pt-1">
                     <button type="button" onclick="closeAdminAuthModal()" class="px-3 py-1.5 border rounded-lg text-xs font-bold">Hủy</button>
                     <button type="submit" class="px-4 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold shadow">Mở Khóa</button>
@@ -642,7 +588,7 @@
         <div class="bg-white rounded-xl shadow-xl w-full max-w-xs overflow-hidden">
             <div class="bg-blue-900 px-3.5 py-2.5 text-white flex justify-between items-center">
                 <h3 class="font-bold text-xs">Thêm Phân Xưởng</h3>
-                <button onclick="document.getElementById('add-workshop-modal').classList.add('hidden')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+                <button type="button" onclick="document.getElementById('add-workshop-modal').classList.add('hidden')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
             <form onsubmit="saveNewWorkshopAdmin(event)" class="p-3.5 space-y-2.5 text-xs">
                 <div>
@@ -662,7 +608,7 @@
         <div class="bg-white rounded-xl shadow-xl w-full max-w-xs overflow-hidden">
             <div class="bg-emerald-900 px-3.5 py-2.5 text-white flex justify-between items-center">
                 <h3 class="font-bold text-xs">Thêm Danh Mục</h3>
-                <button onclick="document.getElementById('add-category-modal').classList.add('hidden')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+                <button type="button" onclick="document.getElementById('add-category-modal').classList.add('hidden')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
             <form onsubmit="saveNewCategoryAdmin(event)" class="p-3.5 space-y-3 text-xs">
                 <div id="container-modal-cat-workshop">
@@ -686,7 +632,7 @@
         <div class="bg-white rounded-xl shadow-xl w-full max-w-xs overflow-hidden">
             <div class="bg-indigo-900 px-3.5 py-2.5 text-white flex justify-between items-center">
                 <h3 class="font-bold text-xs">Thêm Máy / Dây Chuyền</h3>
-                <button onclick="document.getElementById('add-machine-modal').classList.add('hidden')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+                <button type="button" onclick="document.getElementById('add-machine-modal').classList.add('hidden')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
             <form onsubmit="saveNewMachineAdmin(event)" class="p-3.5 space-y-3 text-xs">
                 <div id="container-modal-mach-workshop">
@@ -710,7 +656,7 @@
         <div class="bg-white rounded-xl shadow-xl w-full max-w-xs overflow-hidden">
             <div class="bg-slate-900 px-3.5 py-2.5 text-white flex justify-between items-center">
                 <h3 id="modal-material-title" class="font-bold text-xs">Thêm Mã SAP</h3>
-                <button onclick="closeAddMaterialModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+                <button type="button" onclick="closeAddMaterialModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
             <form onsubmit="saveMaterialMasterForm(event)" class="p-3.5 space-y-2.5 text-xs">
                 <div id="container-modal-mat-workshop">
@@ -778,8 +724,22 @@
         document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('user-date').value = new Date().toISOString().split('T')[0];
             await loadInitialData();
+            await checkSessionStatus();
             lucide.createIcons();
         });
+
+        async function checkSessionStatus() {
+            try {
+                const res = await fetch('/Home/CheckAdminSession');
+                const data = await res.json();
+                if (data.loggedIn) {
+                    isAdminAuthenticated = true;
+                    currentAdminRole = data.role;
+                    currentAdminWorkshop = data.workshop;
+                    await updateAdminUIState();
+                }
+            } catch (e) { }
+        }
 
         function initOrUnlockAudio() {
             try {
@@ -1127,7 +1087,7 @@
                         <td class="p-2">${it.Machine}</td>
                         <td class="p-2 font-bold text-emerald-600">${it.Quantity}</td>
                         <td class="p-2 font-bold text-blue-600">${it.Tubes}</td>
-                        <td class="p-2 text-center"><button onclick="currentSheetItems.splice(${idx},1);renderCurrentSheetItems();" class="text-red-500 font-bold">&times;</button></td>
+                        <td class="p-2 text-center"><button type="button" onclick="currentSheetItems.splice(${idx},1);renderCurrentSheetItems();" class="text-red-500 font-bold">&times;</button></td>
                     </tr>
                 `).join('');
         }
@@ -1189,10 +1149,10 @@
                                 <td class="p-2 text-center font-bold">${r.ItemsCount}</td>
                                 <td class="p-2 text-right">
                                     <div class="flex items-center justify-end space-x-2">
-                                        <button onclick="viewHistoryDetail('${r.Id}')" class="text-blue-600 hover:text-blue-800 font-bold text-xs underline">Xem</button>
+                                        <button type="button" onclick="viewHistoryDetail('${r.Id}')" class="text-blue-600 hover:text-blue-800 font-bold text-xs underline">Xem</button>
                                         ${canModify ? `
-                                            <button onclick="openEditSheetModal('${r.Id}')" class="text-amber-600 hover:text-amber-800 font-bold text-xs underline">Sửa</button>
-                                            <button onclick="deleteSheet('${r.Id}')" class="text-red-500 hover:text-red-700 font-bold text-xs underline">Xóa</button>
+                                            <button type="button" onclick="openEditSheetModal('${r.Id}')" class="text-amber-600 hover:text-amber-800 font-bold text-xs underline">Sửa</button>
+                                            <button type="button" onclick="deleteSheet('${r.Id}')" class="text-red-500 hover:text-red-700 font-bold text-xs underline">Xóa</button>
                                         ` : ''}
                                     </div>
                                 </td>
@@ -1332,7 +1292,7 @@
                     <div class="bg-slate-50 border border-slate-200 rounded-lg p-2.5 space-y-1.5">
                         <div class="flex justify-between items-center">
                             <div class="font-bold text-slate-800 text-xs truncate max-w-[220px]">[${it.SapCode}] ${it.Name}</div>
-                            <button onclick="removeEditingSheetItem(${idx})" class="text-red-500 hover:text-red-700 font-bold px-1">&times;</button>
+                            <button type="button" onclick="removeEditingSheetItem(${idx})" class="text-red-500 hover:text-red-700 font-bold px-1">&times;</button>
                         </div>
                         <div class="grid grid-cols-3 gap-2">
                             <div>
@@ -1525,7 +1485,7 @@
                     showToast(resData.message, resData.success ? "success" : "error");
 
                     await loadInitialData();
-                    updateAdminUIState();
+                    await updateAdminUIState();
                 } catch (err) {
                     showToast("Lỗi đọc file Excel Mã SAP!", "error");
                 } finally {
@@ -1595,7 +1555,7 @@
                     showToast(resData.message, resData.success ? "success" : "error");
 
                     await loadInitialData();
-                    updateAdminUIState();
+                    await updateAdminUIState();
                 } catch (err) {
                     showToast("Lỗi đọc file Excel danh mục!", "error");
                 } finally {
@@ -1665,7 +1625,7 @@
                     showToast(resData.message, resData.success ? "success" : "error");
 
                     await loadInitialData();
-                    updateAdminUIState();
+                    await updateAdminUIState();
                 } catch (err) {
                     showToast("Lỗi đọc file Excel máy!", "error");
                 } finally {
@@ -1675,126 +1635,73 @@
             reader.readAsArrayBuffer(file);
         }
 
-        /* ===== QUẢN TRỊ: THÊM HÀNG LOẠT DANH MỤC & MÁY BẰNG VĂN BẢN ===== */
-        function openBatchCategoryModal() {
-            const wsSelect = document.getElementById('batch-cat-workshop');
-            wsSelect.innerHTML = workshops.map(w => `<option value="${w.Name}" ${(currentAdminRole === 'WORKSHOP_ADMIN' && w.Name === currentAdminWorkshop) ? 'selected' : ''}>${w.Name}</option>`).join('');
-            if (currentAdminRole === 'WORKSHOP_ADMIN') wsSelect.disabled = true;
-            document.getElementById('batch-cat-names').value = '';
-            document.getElementById('batch-category-modal').classList.remove('hidden');
-            document.getElementById('batch-category-modal').classList.add('flex');
-        }
-
-        function closeBatchCategoryModal() {
-            document.getElementById('batch-category-modal').classList.add('hidden');
-            document.getElementById('batch-category-modal').classList.remove('flex');
-        }
-
-        async function saveBatchCategoryForm(e) {
-            e.preventDefault();
-            const workshop = document.getElementById('batch-cat-workshop').value;
-            const names = document.getElementById('batch-cat-names').value;
-
-            const res = await fetch('/Home/SaveBatchCategories', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ workshop, names })
-            });
-            const data = await res.json();
-            showToast(data.message, data.success ? "success" : "error");
-            closeBatchCategoryModal();
-            await loadInitialData();
-            updateAdminUIState();
-        }
-
-        function openBatchMachineModal() {
-            const wsSelect = document.getElementById('batch-mach-workshop');
-            wsSelect.innerHTML = workshops.map(w => `<option value="${w.Name}" ${(currentAdminRole === 'WORKSHOP_ADMIN' && w.Name === currentAdminWorkshop) ? 'selected' : ''}>${w.Name}</option>`).join('');
-            if (currentAdminRole === 'WORKSHOP_ADMIN') wsSelect.disabled = true;
-            document.getElementById('batch-mach-names').value = '';
-            document.getElementById('batch-machine-modal').classList.remove('hidden');
-            document.getElementById('batch-machine-modal').classList.add('flex');
-        }
-
-        function closeBatchMachineModal() {
-            document.getElementById('batch-machine-modal').classList.add('hidden');
-            document.getElementById('batch-machine-modal').classList.remove('flex');
-        }
-
-        async function saveBatchMachineForm(e) {
-            e.preventDefault();
-            const workshop = document.getElementById('batch-mach-workshop').value;
-            const names = document.getElementById('batch-mach-names').value;
-
-            const res = await fetch('/Home/SaveBatchMachines', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ names, workshop })
-            });
-            const data = await res.json();
-            showToast(data.message, data.success ? "success" : "error");
-            closeBatchMachineModal();
-            await loadInitialData();
-            updateAdminUIState();
-        }
-
-        /* ===== ADMIN AUTH & TABS ===== */
+        /* ===== ADMIN AUTH & TABS (BẢO MẬT GỌI LÊN SERVER) ===== */
         function openAdminAuthModal() {
+            const modal = document.getElementById('admin-auth-modal');
+            if (!modal) return;
+
             if (isAdminAuthenticated) {
                 switchTab('admin-tab');
             } else {
-                document.getElementById('admin-pass-input').value = '';
-                document.getElementById('admin-auth-modal').classList.remove('hidden');
-                document.getElementById('admin-auth-modal').classList.add('flex');
+                const passInput = document.getElementById('admin-pass-input');
+                if (passInput) passInput.value = '';
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
             }
         }
 
         function closeAdminAuthModal() {
-            document.getElementById('admin-auth-modal').classList.add('hidden');
-            document.getElementById('admin-auth-modal').classList.remove('flex');
+            const modal = document.getElementById('admin-auth-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
         }
 
-        function verifyAdminPass(e) {
+        async function verifyAdminPass(e) {
             e.preventDefault();
-            const pass = document.getElementById('admin-pass-input').value.trim();
+            const passInput = document.getElementById('admin-pass-input');
+            const pass = passInput ? passInput.value.trim() : '';
             if (!pass) return;
 
-            if (pass === 'vietanh0910' || pass === 'vietanh910') {
-                isAdminAuthenticated = true;
-                currentAdminRole = 'SUPER_ADMIN';
-                currentAdminWorkshop = null;
-                closeAdminAuthModal();
-                updateAdminUIState();
-                switchTab('admin-tab');
-                showToast("Đăng nhập Admin Tổng!");
-                return;
-            }
+            try {
+                const res = await fetch('/Home/VerifyAdminLogin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ Password: pass })
+                });
+                const data = await res.json();
 
-            const matched = workshops.find(w => w.Password && w.Password.toLowerCase() === pass.toLowerCase());
-            if (matched) {
-                isAdminAuthenticated = true;
-                currentAdminRole = 'WORKSHOP_ADMIN';
-                currentAdminWorkshop = matched.Name;
-                closeAdminAuthModal();
-                updateAdminUIState();
-                switchTab('admin-tab');
-                showToast(`Đăng nhập Admin ${matched.Name}!`);
-                return;
+                if (data.success) {
+                    isAdminAuthenticated = true;
+                    currentAdminRole = data.role;
+                    currentAdminWorkshop = data.workshop;
+                    closeAdminAuthModal();
+                    await updateAdminUIState();
+                    switchTab('admin-tab');
+                    showToast(data.message);
+                } else {
+                    showToast(data.message, "error");
+                }
+            } catch (err) {
+                showToast("Lỗi kết nối xác thực Admin!", "error");
             }
-
-            showToast("Mật khẩu không đúng!", "error");
         }
 
-        function logoutAdmin() {
+        async function logoutAdmin() {
+            try {
+                await fetch('/Home/LogoutAdmin', { method: 'POST' });
+            } catch (e) { }
+
             isAdminAuthenticated = false;
             currentAdminRole = null;
             currentAdminWorkshop = null;
-            updateAdminUIState();
+            await updateAdminUIState();
             switchTab('user-tab');
             showToast("Đã đăng xuất tài khoản Admin!");
         }
 
-        function updateAdminUIState() {
+        async function updateAdminUIState() {
             const roleBadge = document.getElementById('admin-role-badge');
             const adminNavText = document.getElementById('btn-admin-text');
             const wsSection = document.getElementById('admin-workshop-section');
@@ -1876,7 +1783,7 @@
                 if (wsFilterContainer) wsFilterContainer.classList.add('hidden');
             }
 
-            renderAdminWorkshopsChips();
+            await renderAdminWorkshopsChips();
             renderAdminCategoriesChips();
             renderAdminMachinesChips();
             renderAdminCategoryFilterDropdown();
@@ -1884,21 +1791,30 @@
             lucide.createIcons();
         }
 
-        function renderAdminWorkshopsChips() {
+        async function renderAdminWorkshopsChips() {
             const container = document.getElementById('admin-workshops-chips');
             if (!container) return;
             if (currentAdminRole === 'SUPER_ADMIN') {
-                container.innerHTML = workshops.map(w => `
-                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-2 flex justify-between items-center text-xs">
-                            <div class="truncate mr-1">
-                                <div class="font-bold text-slate-800 truncate">${w.Name}</div>
-                                <div class="text-[10px] text-blue-700 font-mono mt-0.5">Mật khẩu: <b class="bg-blue-100 text-blue-900 px-1 rounded">${w.Password}</b></div>
-                            </div>
-                            <button onclick="deleteWorkshopAdmin('${w.Name}')" class="text-red-500 hover:text-red-700 p-1 shrink-0" title="Xóa phân xưởng">
-                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                            </button>
-                        </div>
-                    `).join('');
+                try {
+                    const res = await fetch('/Home/GetAdminWorkshops');
+                    const json = await res.json();
+                    if (json.success && json.data) {
+                        container.innerHTML = json.data.map(w => `
+                                <div class="bg-slate-50 border border-slate-200 rounded-lg p-2 flex justify-between items-center text-xs">
+                                    <div class="truncate mr-1">
+                                        <div class="font-bold text-slate-800 truncate">${w.Name}</div>
+                                        <div class="text-[10px] text-blue-700 font-mono mt-0.5">Mật khẩu: <b class="bg-blue-100 text-blue-900 px-1 rounded">${w.Password}</b></div>
+                                    </div>
+                                    <button type="button" onclick="deleteWorkshopAdmin('${w.Name}')" class="text-red-500 hover:text-red-700 p-1 shrink-0" title="Xóa phân xưởng">
+                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </div>
+                            `).join('');
+                        lucide.createIcons();
+                    }
+                } catch (e) {
+                    container.innerHTML = '';
+                }
             } else {
                 container.innerHTML = '';
             }
@@ -1919,7 +1835,7 @@
                 return `
                         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
                             ${c.Name} ${currentAdminRole === 'SUPER_ADMIN' ? `<span class="text-[10px] text-emerald-600 ml-1 font-normal">(${c.Workshop})</span>` : ''}
-                            ${canDelete ? `<button onclick="deleteCategoryAdmin('${c.Name}', '${c.Workshop}')" class="ml-1.5 text-slate-400 hover:text-red-600 font-bold">&times;</button>` : ''}
+                            ${canDelete ? `<button type="button" onclick="deleteCategoryAdmin('${c.Name}', '${c.Workshop}')" class="ml-1.5 text-slate-400 hover:text-red-600 font-bold">&times;</button>` : ''}
                         </span>
                     `;
             }).join('');
@@ -1940,7 +1856,7 @@
                 return `
                         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-800 border border-indigo-200">
                             ${m.Name} ${currentAdminRole === 'SUPER_ADMIN' ? `<span class="text-[10px] text-indigo-600 ml-1 font-normal">(${m.Workshop})</span>` : ''}
-                            ${canDelete ? `<button onclick="deleteMachineAdmin('${m.Name}', '${m.Workshop}')" class="ml-1.5 text-slate-400 hover:text-red-600 font-bold">&times;</button>` : ''}
+                            ${canDelete ? `<button type="button" onclick="deleteMachineAdmin('${m.Name}', '${m.Workshop}')" class="ml-1.5 text-slate-400 hover:text-red-600 font-bold">&times;</button>` : ''}
                         </span>
                     `;
             }).join('');
@@ -1997,13 +1913,13 @@
                             <td class="p-2 font-semibold text-slate-800">${m.Name}</td>
                             <td class="p-2"><span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 border">${m.Category}</span></td>
                             <td class="p-2 text-center">
-                                <button onclick="editMaterialMaster('${m.SapCode}')" class="text-amber-500 hover:text-amber-700 p-1" title="Chỉnh sửa mã SAP">
+                                <button type="button" onclick="editMaterialMaster('${m.SapCode}')" class="text-amber-500 hover:text-amber-700 p-1" title="Chỉnh sửa mã SAP">
                                     <i data-lucide="pencil" class="w-4 h-4"></i>
                                 </button>
                             </td>
                             <td class="p-2 text-center">
                                 ${canDelete ? `
-                                    <button onclick="deleteMaterialMaster('${m.SapCode}')" class="text-red-500 hover:text-red-700 p-1" title="Xóa mã SAP">
+                                    <button type="button" onclick="deleteMaterialMaster('${m.SapCode}')" class="text-red-500 hover:text-red-700 p-1" title="Xóa mã SAP">
                                         <i data-lucide="trash-2" class="w-4 h-4"></i>
                                     </button>
                                 ` : `<span class="text-slate-300">-</span>`}
@@ -2037,7 +1953,7 @@
             showToast(data.message, data.success ? "success" : "error");
             document.getElementById('add-workshop-modal').classList.add('hidden');
             await loadInitialData();
-            updateAdminUIState();
+            await updateAdminUIState();
         }
 
         async function deleteWorkshopAdmin(name) {
@@ -2055,7 +1971,7 @@
             const data = await res.json();
             showToast(data.message, data.success ? "success" : "error");
             await loadInitialData();
-            updateAdminUIState();
+            await updateAdminUIState();
         }
 
         function openAddCategoryModal() {
@@ -2083,7 +1999,7 @@
             showToast(data.message, data.success ? "success" : "error");
             document.getElementById('add-category-modal').classList.add('hidden');
             await loadInitialData();
-            updateAdminUIState();
+            await updateAdminUIState();
         }
 
         async function deleteCategoryAdmin(name, workshop) {
@@ -2101,7 +2017,7 @@
             const data = await res.json();
             showToast(data.message, data.success ? "success" : "error");
             await loadInitialData();
-            updateAdminUIState();
+            await updateAdminUIState();
         }
 
         function openAddMachineModal() {
@@ -2129,7 +2045,7 @@
             showToast(data.message, data.success ? "success" : "error");
             document.getElementById('add-machine-modal').classList.add('hidden');
             await loadInitialData();
-            updateAdminUIState();
+            await updateAdminUIState();
         }
 
         async function deleteMachineAdmin(name, workshop) {
@@ -2147,7 +2063,7 @@
             const data = await res.json();
             showToast(data.message, data.success ? "success" : "error");
             await loadInitialData();
-            updateAdminUIState();
+            await updateAdminUIState();
         }
 
         /* ===== QUẢN TRỊ: THÊM / SỬA / XÓA MÃ SAP ===== */
@@ -2238,7 +2154,7 @@
             showToast(data.message, data.success ? "success" : "error");
             closeAddMaterialModal();
             await loadInitialData();
-            updateAdminUIState();
+            await updateAdminUIState();
         }
 
         async function deleteMaterialMaster(sapCode) {
@@ -2260,7 +2176,7 @@
             const data = await res.json();
             showToast(data.message, data.success ? "success" : "error");
             await loadInitialData();
-            updateAdminUIState();
+            await updateAdminUIState();
         }
 
         async function deleteAllMaterialsAdmin() {
@@ -2275,7 +2191,7 @@
             const data = await res.json();
             showToast(data.message, data.success ? "success" : "error");
             await loadInitialData();
-            updateAdminUIState();
+            await updateAdminUIState();
         }
 
         async function deleteAllMachinesAdmin() {
@@ -2290,7 +2206,7 @@
             const data = await res.json();
             showToast(data.message, data.success ? "success" : "error");
             await loadInitialData();
-            updateAdminUIState();
+            await updateAdminUIState();
         }
 
         async function deleteAllCategoriesAdmin() {
@@ -2305,7 +2221,7 @@
             const data = await res.json();
             showToast(data.message, data.success ? "success" : "error");
             await loadInitialData();
-            updateAdminUIState();
+            await updateAdminUIState();
         }
 
         function switchTab(tabId) {

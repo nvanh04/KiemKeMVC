@@ -19,7 +19,12 @@ namespace KiemKeNVL.Controllers
         [HttpGet]
         public JsonResult GetInitialData()
         {
-            var workshops = _db.Workshops.OrderBy(w => w.Id).Select(w => new { w.Id, w.Name, w.Password }).ToList();
+            var workshops = _db.Workshops
+                .Where(w => w.Name != "Admin Tổng" && w.Name != "SUPER_ADMIN")
+                .OrderBy(w => w.Id)
+                .Select(w => new { w.Id, w.Name })
+                .ToList();
+
             var categories = _db.Categories.OrderBy(c => c.Name).Select(c => new { c.Id, c.Name, c.Workshop }).ToList();
             var machines = _db.Machines.OrderBy(m => m.Name).Select(m => new { m.Id, m.Name, m.Workshop }).ToList();
             var materials = _db.Materials.OrderBy(m => m.Name).ToList().Select(m => new {
@@ -33,6 +38,72 @@ namespace KiemKeNVL.Controllers
             }).ToList();
 
             return Json(new { success = true, workshops, categories, machines, materials }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult VerifyAdminLogin(AdminLoginRequest req)
+        {
+            if (req == null || string.IsNullOrWhiteSpace(req.Password))
+                return Json(new { success = false, message = "Vui lòng nhập mật khẩu quản trị!" });
+
+            string passTrim = req.Password.Trim();
+
+            var superAdmin = _db.Workshops.FirstOrDefault(w =>
+                (w.Name == "Admin Tổng" || w.Name == "SUPER_ADMIN") && w.Password == passTrim);
+
+            if (superAdmin != null)
+            {
+                Session["AdminRole"] = "SUPER_ADMIN";
+                Session["AdminWorkshop"] = null;
+                return Json(new { success = true, role = "SUPER_ADMIN", workshop = (string)null, message = "Đăng nhập Admin Tổng thành công!" });
+            }
+
+            var workshopMatch = _db.Workshops.FirstOrDefault(w =>
+                w.Name != "Admin Tổng" && w.Name != "SUPER_ADMIN" && w.Password != null && w.Password.ToLower() == passTrim.ToLower());
+
+            if (workshopMatch != null)
+            {
+                Session["AdminRole"] = "WORKSHOP_ADMIN";
+                Session["AdminWorkshop"] = workshopMatch.Name;
+                return Json(new { success = true, role = "WORKSHOP_ADMIN", workshop = workshopMatch.Name, message = $"Đăng nhập Admin {workshopMatch.Name} thành công!" });
+            }
+
+            return Json(new { success = false, message = "Mật khẩu quản trị không chính xác!" });
+        }
+
+        [HttpGet]
+        public JsonResult CheckAdminSession()
+        {
+            var role = Session["AdminRole"] as string;
+            var ws = Session["AdminWorkshop"] as string;
+            if (!string.IsNullOrEmpty(role))
+            {
+                return Json(new { loggedIn = true, role = role, workshop = ws }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { loggedIn = false }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetAdminWorkshops()
+        {
+            if (Session["AdminRole"] as string != "SUPER_ADMIN")
+                return Json(new { success = false, message = "Từ chối truy cập! Yêu cầu quyền Admin Tổng." }, JsonRequestBehavior.AllowGet);
+
+            var list = _db.Workshops
+                .Where(w => w.Name != "Admin Tổng" && w.Name != "SUPER_ADMIN")
+                .OrderBy(w => w.Id)
+                .Select(w => new { w.Id, w.Name, w.Password })
+                .ToList();
+
+            return Json(new { success = true, data = list }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult LogoutAdmin()
+        {
+            Session["AdminRole"] = null;
+            Session["AdminWorkshop"] = null;
+            return Json(new { success = true, message = "Đã đăng xuất tài khoản quản trị!" });
         }
 
         [HttpPost]
@@ -128,8 +199,14 @@ namespace KiemKeNVL.Controllers
         [HttpPost]
         public JsonResult DeleteSheet(string id)
         {
+            var role = Session["AdminRole"] as string;
+            var currentWs = Session["AdminWorkshop"] as string;
+
             var sheet = _db.InventorySheets.Find(id);
-            if (sheet == null) return Json(new { success = false, message = "Không tìm thấy phiếu" });
+            if (sheet == null) return Json(new { success = false, message = "Không tìm thấy phiếu!" });
+
+            if (role != "SUPER_ADMIN" && (role != "WORKSHOP_ADMIN" || sheet.Workshop != currentWs))
+                return Json(new { success = false, message = "Từ chối quyền xóa phiếu!" });
 
             _db.InventorySheets.Remove(sheet);
             _db.SaveChanges();
@@ -142,11 +219,17 @@ namespace KiemKeNVL.Controllers
             if (req == null || string.IsNullOrEmpty(req.SheetId))
                 return Json(new { success = false, message = "Dữ liệu không hợp lệ!" });
 
+            var role = Session["AdminRole"] as string;
+            var currentWs = Session["AdminWorkshop"] as string;
+
             var sheet = _db.InventorySheets.Include(s => s.Items).FirstOrDefault(s => s.Id == req.SheetId);
             if (sheet == null)
                 return Json(new { success = false, message = "Không tìm thấy phiếu!" });
 
-            sheet.Workshop = req.Workshop;
+            if (role != "SUPER_ADMIN" && (role != "WORKSHOP_ADMIN" || sheet.Workshop != currentWs))
+                return Json(new { success = false, message = "Từ chối quyền cập nhật phiếu!" });
+
+            sheet.Workshop = (role == "SUPER_ADMIN") ? req.Workshop : sheet.Workshop;
             sheet.Date = req.Date;
             sheet.CreatedBy = req.CreatedBy;
             sheet.Machine = req.Items?.FirstOrDefault()?.Machine ?? sheet.Machine;
@@ -163,7 +246,7 @@ namespace KiemKeNVL.Controllers
                         SapCode = item.SapCode,
                         Name = item.Name,
                         Category = item.Category,
-                        Workshop = req.Workshop,
+                        Workshop = sheet.Workshop,
                         Machine = item.Machine,
                         Quantity = item.Quantity,
                         Tubes = item.Tubes,
@@ -179,6 +262,9 @@ namespace KiemKeNVL.Controllers
         [HttpPost]
         public JsonResult SaveWorkshop(string name)
         {
+            if (Session["AdminRole"] as string != "SUPER_ADMIN")
+                return Json(new { success = false, message = "Chỉ Admin Tổng mới có quyền thêm phân xưởng!" });
+
             if (_db.Workshops.Any(w => w.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
                 return Json(new { success = false, message = "Phân xưởng đã tồn tại!" });
 
@@ -191,10 +277,16 @@ namespace KiemKeNVL.Controllers
         [HttpPost]
         public JsonResult SaveCategory(string name, string workshop)
         {
+            var role = Session["AdminRole"] as string;
+            var currentWs = Session["AdminWorkshop"] as string;
+
+            if (role != "SUPER_ADMIN" && (role != "WORKSHOP_ADMIN" || workshop != currentWs))
+                return Json(new { success = false, message = "Bạn không có quyền thêm danh mục vào xưởng này!" });
+
             if (_db.Categories.Any(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase) && c.Workshop == workshop))
                 return Json(new { success = false, message = "Danh mục đã có trong phân xưởng!" });
 
-            _db.Categories.Add(new Category { Name = name.ToUpper(), Workshop = workshop });
+            _db.Categories.Add(new Category { Name = name.ToUpper().Trim(), Workshop = workshop.Trim() });
             _db.SaveChanges();
             return Json(new { success = true, message = "Đã lưu danh mục!" });
         }
@@ -202,10 +294,16 @@ namespace KiemKeNVL.Controllers
         [HttpPost]
         public JsonResult SaveMachine(string name, string workshop)
         {
+            var role = Session["AdminRole"] as string;
+            var currentWs = Session["AdminWorkshop"] as string;
+
+            if (role != "SUPER_ADMIN" && (role != "WORKSHOP_ADMIN" || workshop != currentWs))
+                return Json(new { success = false, message = "Bạn không có quyền thêm máy vào xưởng này!" });
+
             if (_db.Machines.Any(m => m.Name.Equals(name, StringComparison.OrdinalIgnoreCase) && m.Workshop == workshop))
                 return Json(new { success = false, message = "Máy/vị trí đã có trong phân xưởng!" });
 
-            _db.Machines.Add(new Machine { Name = name, Workshop = workshop });
+            _db.Machines.Add(new Machine { Name = name.Trim(), Workshop = workshop.Trim() });
             _db.SaveChanges();
             return Json(new { success = true, message = "Đã thêm máy!" });
         }
@@ -213,10 +311,13 @@ namespace KiemKeNVL.Controllers
         [HttpPost]
         public JsonResult DeleteWorkshop(string name)
         {
+            if (Session["AdminRole"] as string != "SUPER_ADMIN")
+                return Json(new { success = false, message = "Chỉ Admin Tổng mới có quyền xóa phân xưởng!" });
+
             var ws = _db.Workshops.FirstOrDefault(w => w.Name == name);
             if (ws == null) return Json(new { success = false, message = "Không tìm thấy phân xưởng!" });
 
-            if (_db.Workshops.Count() <= 1)
+            if (_db.Workshops.Count(w => w.Name != "Admin Tổng" && w.Name != "SUPER_ADMIN") <= 1)
                 return Json(new { success = false, message = "Phải duy trì tối thiểu 1 phân xưởng!" });
 
             _db.Workshops.Remove(ws);
@@ -227,6 +328,12 @@ namespace KiemKeNVL.Controllers
         [HttpPost]
         public JsonResult DeleteCategory(string name, string workshop)
         {
+            var role = Session["AdminRole"] as string;
+            var currentWs = Session["AdminWorkshop"] as string;
+
+            if (role != "SUPER_ADMIN" && (role != "WORKSHOP_ADMIN" || workshop != currentWs))
+                return Json(new { success = false, message = "Bạn không có quyền xóa danh mục của xưởng khác!" });
+
             var cat = _db.Categories.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase) && c.Workshop == workshop);
             if (cat == null) return Json(new { success = false, message = "Không tìm thấy danh mục trong phân xưởng này!" });
 
@@ -238,6 +345,12 @@ namespace KiemKeNVL.Controllers
         [HttpPost]
         public JsonResult DeleteMachine(string name, string workshop)
         {
+            var role = Session["AdminRole"] as string;
+            var currentWs = Session["AdminWorkshop"] as string;
+
+            if (role != "SUPER_ADMIN" && (role != "WORKSHOP_ADMIN" || workshop != currentWs))
+                return Json(new { success = false, message = "Bạn không có quyền xóa máy của xưởng khác!" });
+
             var mach = _db.Machines.FirstOrDefault(m => m.Name.Equals(name, StringComparison.OrdinalIgnoreCase) && m.Workshop == workshop);
             if (mach == null) return Json(new { success = false, message = "Không tìm thấy máy trong phân xưởng này!" });
 
@@ -252,8 +365,14 @@ namespace KiemKeNVL.Controllers
             if (dto == null || string.IsNullOrWhiteSpace(dto.SapCode) || string.IsNullOrWhiteSpace(dto.Name) || string.IsNullOrWhiteSpace(dto.Workshop))
                 return Json(new { success = false, message = "Vui lòng nhập đầy đủ Phân xưởng, Mã SAP và Tên vật tư!" });
 
-            string sap = dto.SapCode.Trim();
+            var role = Session["AdminRole"] as string;
+            var currentWs = Session["AdminWorkshop"] as string;
             string ws = dto.Workshop.Trim();
+
+            if (role != null && role != "SUPER_ADMIN" && (role == "WORKSHOP_ADMIN" && ws != currentWs))
+                return Json(new { success = false, message = "Bạn không có quyền lưu mã SAP cho xưởng khác!" });
+
+            string sap = dto.SapCode.Trim();
 
             if (!string.IsNullOrEmpty(dto.OriginalSapCode))
             {
@@ -295,6 +414,12 @@ namespace KiemKeNVL.Controllers
         [HttpPost]
         public JsonResult DeleteMaterial(string sapCode, string workshop)
         {
+            var role = Session["AdminRole"] as string;
+            var currentWs = Session["AdminWorkshop"] as string;
+
+            if (role != "SUPER_ADMIN" && (role != "WORKSHOP_ADMIN" || workshop != currentWs))
+                return Json(new { success = false, message = "Bạn không có quyền xóa mã SAP của xưởng khác!" });
+
             var targetCode = (sapCode ?? "").Trim();
             var targetWs = (workshop ?? "").Trim();
 
@@ -312,13 +437,20 @@ namespace KiemKeNVL.Controllers
         [HttpPost]
         public JsonResult DeleteAllMaterials(string workshop)
         {
-            if (string.IsNullOrEmpty(workshop) || workshop == "ALL")
+            var role = Session["AdminRole"] as string;
+            var currentWs = Session["AdminWorkshop"] as string;
+
+            if (role != "SUPER_ADMIN" && (role != "WORKSHOP_ADMIN" || (workshop != "ALL" && workshop != currentWs)))
+                return Json(new { success = false, message = "Từ chối quyền xóa toàn bộ vật tư!" });
+
+            if (role == "SUPER_ADMIN" && (string.IsNullOrEmpty(workshop) || workshop == "ALL"))
             {
                 _db.Materials.RemoveRange(_db.Materials);
             }
             else
             {
-                var mats = _db.Materials.Where(m => m.Workshop == workshop).ToList();
+                string ws = (role == "WORKSHOP_ADMIN") ? currentWs : workshop;
+                var mats = _db.Materials.Where(m => m.Workshop == ws).ToList();
                 _db.Materials.RemoveRange(mats);
             }
             _db.SaveChanges();
@@ -328,13 +460,20 @@ namespace KiemKeNVL.Controllers
         [HttpPost]
         public JsonResult DeleteAllMachines(string workshop)
         {
-            if (string.IsNullOrEmpty(workshop) || workshop == "ALL")
+            var role = Session["AdminRole"] as string;
+            var currentWs = Session["AdminWorkshop"] as string;
+
+            if (role != "SUPER_ADMIN" && (role != "WORKSHOP_ADMIN" || (workshop != "ALL" && workshop != currentWs)))
+                return Json(new { success = false, message = "Từ chối quyền xóa toàn bộ máy!" });
+
+            if (role == "SUPER_ADMIN" && (string.IsNullOrEmpty(workshop) || workshop == "ALL"))
             {
                 _db.Machines.RemoveRange(_db.Machines);
             }
             else
             {
-                var machs = _db.Machines.Where(m => m.Workshop == workshop).ToList();
+                string ws = (role == "WORKSHOP_ADMIN") ? currentWs : workshop;
+                var machs = _db.Machines.Where(m => m.Workshop == ws).ToList();
                 _db.Machines.RemoveRange(machs);
             }
             _db.SaveChanges();
@@ -344,13 +483,20 @@ namespace KiemKeNVL.Controllers
         [HttpPost]
         public JsonResult DeleteAllCategories(string workshop)
         {
-            if (string.IsNullOrEmpty(workshop) || workshop == "ALL")
+            var role = Session["AdminRole"] as string;
+            var currentWs = Session["AdminWorkshop"] as string;
+
+            if (role != "SUPER_ADMIN" && (role != "WORKSHOP_ADMIN" || (workshop != "ALL" && workshop != currentWs)))
+                return Json(new { success = false, message = "Từ chối quyền xóa toàn bộ danh mục!" });
+
+            if (role == "SUPER_ADMIN" && (string.IsNullOrEmpty(workshop) || workshop == "ALL"))
             {
                 _db.Categories.RemoveRange(_db.Categories);
             }
             else
             {
-                var cats = _db.Categories.Where(c => c.Workshop == workshop).ToList();
+                string ws = (role == "WORKSHOP_ADMIN") ? currentWs : workshop;
+                var cats = _db.Categories.Where(c => c.Workshop == ws).ToList();
                 _db.Categories.RemoveRange(cats);
             }
             _db.SaveChanges();
@@ -363,6 +509,9 @@ namespace KiemKeNVL.Controllers
             if (req == null || req.Materials == null || req.Materials.Count == 0)
                 return Json(new { success = false, message = "Không có dữ liệu vật tư để nhập!" });
 
+            var role = Session["AdminRole"] as string;
+            var currentWs = Session["AdminWorkshop"] as string;
+
             int insertedCount = 0;
             int updatedCount = 0;
 
@@ -372,7 +521,10 @@ namespace KiemKeNVL.Controllers
                     continue;
 
                 string sap = item.SapCode.Trim();
-                string ws = string.IsNullOrWhiteSpace(item.Workshop) ? "Phân Xưởng Cắt" : item.Workshop.Trim();
+                string ws = (role == "WORKSHOP_ADMIN" && !string.IsNullOrEmpty(currentWs))
+                    ? currentWs
+                    : (string.IsNullOrWhiteSpace(item.Workshop) ? "Phân Xưởng Cắt" : item.Workshop.Trim());
+
                 string cat = string.IsNullOrWhiteSpace(item.Category) ? "KHÁC" : item.Category.Trim().ToUpper();
 
                 if (!_db.Workshops.Any(w => w.Name.Equals(ws, StringComparison.OrdinalIgnoreCase)))
@@ -420,13 +572,19 @@ namespace KiemKeNVL.Controllers
             if (req == null || req.Categories == null || req.Categories.Count == 0)
                 return Json(new { success = false, message = "Không có dữ liệu danh mục để nhập!" });
 
+            var role = Session["AdminRole"] as string;
+            var currentWs = Session["AdminWorkshop"] as string;
+
             int added = 0;
             foreach (var item in req.Categories)
             {
-                if (string.IsNullOrWhiteSpace(item.Name) || string.IsNullOrWhiteSpace(item.Workshop))
+                if (string.IsNullOrWhiteSpace(item.Name))
                     continue;
 
-                string ws = item.Workshop.Trim();
+                string ws = (role == "WORKSHOP_ADMIN" && !string.IsNullOrEmpty(currentWs))
+                    ? currentWs
+                    : (string.IsNullOrWhiteSpace(item.Workshop) ? "Phân Xưởng Cắt" : item.Workshop.Trim());
+
                 string catName = item.Name.Trim().ToUpper();
 
                 if (!_db.Workshops.Any(w => w.Name.Equals(ws, StringComparison.OrdinalIgnoreCase)))
@@ -453,13 +611,19 @@ namespace KiemKeNVL.Controllers
             if (req == null || req.Machines == null || req.Machines.Count == 0)
                 return Json(new { success = false, message = "Không có dữ liệu máy để nhập!" });
 
+            var role = Session["AdminRole"] as string;
+            var currentWs = Session["AdminWorkshop"] as string;
+
             int added = 0;
             foreach (var item in req.Machines)
             {
-                if (string.IsNullOrWhiteSpace(item.Name) || string.IsNullOrWhiteSpace(item.Workshop))
+                if (string.IsNullOrWhiteSpace(item.Name))
                     continue;
 
-                string ws = item.Workshop.Trim();
+                string ws = (role == "WORKSHOP_ADMIN" && !string.IsNullOrEmpty(currentWs))
+                    ? currentWs
+                    : (string.IsNullOrWhiteSpace(item.Workshop) ? "Phân Xưởng Cắt" : item.Workshop.Trim());
+
                 string machName = item.Name.Trim();
 
                 if (!_db.Workshops.Any(w => w.Name.Equals(ws, StringComparison.OrdinalIgnoreCase)))
@@ -486,67 +650,23 @@ namespace KiemKeNVL.Controllers
             if (req == null || req.SheetIds == null || req.SheetIds.Count == 0)
                 return Json(new { success = false, message = "Không có phiếu nào để xóa!" });
 
-            var sheets = _db.InventorySheets.Where(s => req.SheetIds.Contains(s.Id)).ToList();
+            var role = Session["AdminRole"] as string;
+            var currentWs = Session["AdminWorkshop"] as string;
+
+            if (role == null)
+                return Json(new { success = false, message = "Yêu cầu đăng nhập Admin để xóa!" });
+
+            var query = _db.InventorySheets.Where(s => req.SheetIds.Contains(s.Id));
+            if (role == "WORKSHOP_ADMIN")
+            {
+                query = query.Where(s => s.Workshop == currentWs);
+            }
+
+            var sheets = query.ToList();
             _db.InventorySheets.RemoveRange(sheets);
             _db.SaveChanges();
 
             return Json(new { success = true, message = $"Đã xóa thành công {sheets.Count} phiếu kiểm kê!" });
-        }
-
-        [HttpPost]
-        public JsonResult SaveBatchCategories(BatchCategoryDto req)
-        {
-            if (req == null || string.IsNullOrWhiteSpace(req.Workshop) || string.IsNullOrWhiteSpace(req.Names))
-                return Json(new { success = false, message = "Vui lòng chọn phân xưởng và nhập tên danh mục!" });
-
-            string ws = req.Workshop.Trim();
-            var rawNames = req.Names.Split(new[] { ',', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-            int added = 0;
-
-            foreach (var rawName in rawNames)
-            {
-                string catName = rawName.Trim().ToUpper();
-                if (!string.IsNullOrEmpty(catName))
-                {
-                    bool exists = _db.Categories.Any(c => c.Name.Equals(catName, StringComparison.OrdinalIgnoreCase) && c.Workshop == ws);
-                    if (!exists)
-                    {
-                        _db.Categories.Add(new Category { Name = catName, Workshop = ws });
-                        added++;
-                    }
-                }
-            }
-
-            _db.SaveChanges();
-            return Json(new { success = true, message = $"Đã thêm thành công {added} danh mục mới vào {ws}!" });
-        }
-
-        [HttpPost]
-        public JsonResult SaveBatchMachines(BatchMachineDto req)
-        {
-            if (req == null || string.IsNullOrWhiteSpace(req.Workshop) || string.IsNullOrWhiteSpace(req.Names))
-                return Json(new { success = false, message = "Vui lòng chọn phân xưởng và nhập tên máy!" });
-
-            string ws = req.Workshop.Trim();
-            var rawNames = req.Names.Split(new[] { ',', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-            int added = 0;
-
-            foreach (var rawName in rawNames)
-            {
-                string machName = rawName.Trim();
-                if (!string.IsNullOrEmpty(machName))
-                {
-                    bool exists = _db.Machines.Any(m => m.Name.Equals(machName, StringComparison.OrdinalIgnoreCase) && m.Workshop == ws);
-                    if (!exists)
-                    {
-                        _db.Machines.Add(new Machine { Name = machName, Workshop = ws });
-                        added++;
-                    }
-                }
-            }
-
-            _db.SaveChanges();
-            return Json(new { success = true, message = $"Đã thêm thành công {added} máy mới vào {ws}!" });
         }
 
         protected override void Dispose(bool disposing)

@@ -189,16 +189,8 @@ namespace KiemKeNVL.Models
         public List<string> SheetIds { get; set; }
     }
 
-    // Bổ sung 2 lớp này để giải quyết lỗi CS0246
-    public class BatchCategoryDto
+    public class AdminLoginRequest
     {
-        public string Workshop { get; set; }
-        public string Names { get; set; }
-    }
-
-    public class BatchMachineDto
-    {
-        public string Workshop { get; set; }
-        public string Names { get; set; }
+        public string Password { get; set; }
     }
 }

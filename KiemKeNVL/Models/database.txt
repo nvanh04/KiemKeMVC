@@ -8,7 +8,7 @@ GO
 USE KiemKeDb;
 GO
 
--- 2. Bảng Phân Xưởng
+-- 2. Bảng Phân Xưởng & Tài Khoản Quản Trị (Bảo mật lưu mật khẩu dưới DB)
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Workshops')
 BEGIN
     CREATE TABLE Workshops (
@@ -103,14 +103,23 @@ GO
 -- NẠP DỮ LIỆU MẪU BAN ĐẦU (NẾU HỆ THỐNG TRỐNG)
 -- ==========================================================
 
+-- Thêm tài khoản Admin Tổng và các phân xưởng quản lý
 IF NOT EXISTS (SELECT 1 FROM Workshops)
 BEGIN
     INSERT INTO Workshops (Name, Password) VALUES 
+    (N'Admin Tổng', 'vietanh0910'),
     (N'Phân Xưởng Cắt', 'Cat2026'),
     (N'Phân Xưởng May', 'May2026'),
     (N'Phân Xưởng In', 'In2026'),
     (N'Phân Xưởng Dệt', 'Det2026'),
     (N'Phân Xưởng Hoàn Thiện', 'Hoanthien2026');
+END
+GO
+
+-- Đảm bảo luôn có tài khoản Admin Tổng nếu bảng Workshops đã tồn tại từ trước
+IF NOT EXISTS (SELECT 1 FROM Workshops WHERE Name = N'Admin Tổng')
+BEGIN
+    INSERT INTO Workshops (Name, Password) VALUES (N'Admin Tổng', 'vietanh0910');
 END
 GO
 
@@ -141,10 +150,10 @@ GO
 IF NOT EXISTS (SELECT 1 FROM Materials)
 BEGIN
     INSERT INTO Materials (SapCode, Workshop, Name, Category, Description, Aliases) VALUES
-    ('400009293', N'Phân Xưởng Cắt', N'Nẹp lớn ghép màng mờ', N'NẸP LỚN', 'TR-NL-50-GMM-TRA-0-XK', N'NL GHÉP MÀNG MỜ, NL GMM TRA, NL MỜ'),
+    ('400009293', N'Phân Xưởng Cắt', N'Nẹp lớn ghép màng mờ', N'NẸP LỚN', 'TR-NL-50-GMM-TRA-0-XK', N'NL GHÉP MÀNG MỜ, NL GMM TRA, NL MỜ'),
     ('400009299', N'Phân Xưởng Cắt', N'Nẹp cam lớn 1585', N'NẸP LỚN', 'TR-NL-50-GMB-CAM-1858C-XK', N'NL CAM 1585, NL CAM 1858C'),
     ('400009033', N'Phân Xưởng Cắt', N'Nẹp nhỏ xanh lá 357C', N'NẸP NHỎ', 'N12-6800-GMB-XLA-357C', N'NN XANH LÁ 357, NN XLA 357, NN XANH LA'),
-    ('200000023', N'Phân Xưởng Cắt', N'Dây đai', N'DÂY ĐAI', N'Dây đai đóng kiện Nhiệt', N'DÂY ĐAI, DAY DAI'),
+    ('200000023', N'Phân Xưởng Cắt', N'Dây đai', N'DÂY ĐAI', 'Dây đai đóng kiện Nhiệt', N'DÂY ĐAI, DAY DAI'),
     ('110000009', N'Phân Xưởng Cắt', N'Chỉ coton 7 trắng 1 xanh', N'CHỈ MAY', 'Chỉ may-cotton-8 sợi', N'CHỈ COTON 7 TRẮNG 1 XANH');
 END
 GO
